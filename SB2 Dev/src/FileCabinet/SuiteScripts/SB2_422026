@@ -1,0 +1,28 @@
+/**
+ * @NApiVersion 2.x
+ * @NScriptType ScheduledScript
+ */
+define(['N/email', 'N/runtime'], function (email, runtime) {
+
+    function execute(context) {
+        try {
+            email.send({
+                author: runtime.getCurrentUser().id, // Sender (Employee ID)
+                recipients: ['user@example.com'],    // Can be string or array
+                subject: 'Test Email from NetSuite',
+                body: 'Hello Team,<br/><br/>This is a test email sent using SuiteScript.<br/><br/>Thanks,<br/>NetSuite',
+                cc: ['ccuser@example.com'],
+                bcc: ['bccuser@example.com']
+            });
+
+            log.audit('Email Status', 'Email sent successfully');
+
+        } catch (e) {
+            log.error('Email Error', e.message);
+        }
+    }
+
+    return {
+        execute: execute
+    };
+});
