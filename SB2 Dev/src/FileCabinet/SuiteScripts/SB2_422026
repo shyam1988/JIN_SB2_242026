@@ -7,7 +7,8 @@ define(['N/email', 'N/runtime'], function (email, runtime) {
     function execute(context) {
         try {
             email.send({
-                author: runtime.getCurrentUser().id, // Sender (Employee ID)
+                author: runtime.getCurrentUser().id, // Sender (Employee ID
+                // change comment 
                 recipients: ['user@example.com'],    // Can be string or array
                 subject: 'Test Email from NetSuite',
                 body: 'Hello Team,<br/><br/>This is a test email sent using SuiteScript.<br/><br/>Thanks,<br/>NetSuite',
