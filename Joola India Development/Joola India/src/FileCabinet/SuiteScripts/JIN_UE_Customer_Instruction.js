@@ -39,15 +39,13 @@
 
             // Adding New lines of code to get the customer instruction on update on Wave record Customer Instruction Wave field
             var waveType = newRecord.getText("wavetype");
-            log.debug('BS waveType', waveType);
- 
             var pickingType = newRecord.getValue('picktype');
-            log.debug('BS pickingType', pickingType);
+
  
 
-
-            //if(waveType === 'Sales Order' && pickingType === 'SINGLE') 
-            //{
+            log.debug('recordType = ', recordType);
+            if(recordType === 'wave') 
+            {
 
                 var lineCount = newRecord.getLineCount({ sublistId: "item" });
                 if(lineCount) 
@@ -57,18 +55,15 @@
                         fieldId: 'customerid',
                         line: 0
                     });
-                    //log.debug('BS custID', custID);
 
                     var searchCustNote = search.lookupFields({
                         type: search.Type.CUSTOMER,
                         id: custID,
                         columns: ['custentity_customer_instruction_wave']
                     });
-                    //log.debug("searchCustNote", searchCustNote);
+
 
                     var customerInstruction = searchCustNote.custentity_customer_instruction_wave;
-                    //log.debug("BS customerInstruction", customerInstruction);
-
                     if(customerInstruction) 
                     {
                         newRecord.setValue({
@@ -84,7 +79,27 @@
                     }
 
                 }
-            //}
+            }
+
+            // Adding New lines of code to get the sales order notes on update witn Memo field on Sales Order
+            var finalMemoVal='';
+            if(recordType === 'salesorder')
+            {
+                var finalMemoVal = newRecord.getValue('memo');
+                var notesVal = newRecord.getValue('custbody_notes');
+                if(notesVal)
+                {
+                    finalMemoVal = finalMemoVal + ' | ' + notesVal;
+                }
+
+                newRecord.setValue({
+                    fieldId: 'memo',
+                    value: finalMemoVal,
+                    ignoreFieldChange: true
+                });
+                log.debug('SO NOTES set on waveData', finalMemoVal);
+                
+            }
 
 
         } 
